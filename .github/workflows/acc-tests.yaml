@@ -1,0 +1,25 @@
+name: Run Acceptance Tests
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  run-acc-tests:
+    runs-on: ubuntu-latest
+    env:
+      VAULT_ACC: 1
+      TEST_CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      TEST_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: .go-version
+          cache: true
+      - name: Run Acceptance Tests
+        run: CGO_ENABLED=0 go test -v -timeout=10m
+      - name: Run Test Build
+        run: go build -o bin/vault-plugin-secrets-cloudflare cmd/vault-plugin-secrets-cloudflare/main.go && ls -hl bin/

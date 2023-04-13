@@ -19,7 +19,7 @@ func TestAccServiceToken(t *testing.T) {
 	}
 	envOptions := &stepwise.MountOptions{
 		RegistryName:    "test-cloudflare",
-		PluginType:      stepwise.PluginTypeSecrets,
+		PluginType:      api.PluginTypeSecrets,
 		PluginName:      "vault-plugin-secrets-cloudflare",
 		MountPathPrefix: "cloudflare",
 	}

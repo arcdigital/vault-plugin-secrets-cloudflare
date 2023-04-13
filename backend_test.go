@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	envVarRunAcceptanceTests  = "TEST_CLOUDFLARE_ACCEPTANCE"
+	envVarRunAcceptanceTests  = "VAULT_ACC"
 	envVarCloudflareApiToken  = "TEST_CLOUDFLARE_API_TOKEN"
 	envVarCloudflareAccountId = "TEST_CLOUDFLARE_ACCOUNT_ID"
 	//envVarCloudflareZoneId    = "TEST_CLOUDFLARE_ZONE_ID"

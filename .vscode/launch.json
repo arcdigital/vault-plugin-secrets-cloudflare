@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Unit Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}",
+            "args": [
+                "-test.v"
+            ]
+        },
+        {
+            "name": "Acceptance Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}",
+            "args": [
+                "-test.v",
+                "-test.run",
+                "TestAcc"
+            ],
+            "env": {
+                "VAULT_ACC":"1",
+                "TEST_CLOUDFLARE_ACCOUNT_ID": "test_account_id",
+                "TEST_CLOUDFLARE_API_TOKEN": "test_api_token"
+            }
+        }
+    ]
+}

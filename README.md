@@ -1,2 +1,2 @@
-# vault-plugin-secrets-cloudflare-access
-Vault Secrets Plugin for Cloudflare Access Service Tokens
+# vault-plugin-secrets-cloudflare
+Vault Secrets Plugin for Cloudflare Tokens

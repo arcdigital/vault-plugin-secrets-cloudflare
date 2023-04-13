@@ -30,10 +30,9 @@ func newAcceptanceTestEnv() (*testEnv, error) {
 	return &testEnv{
 		APIToken:  os.Getenv(envVarCloudflareApiToken),
 		AccountID: os.Getenv(envVarCloudflareAccountId),
-		//ZoneID:    os.Getenv(envVarCloudflareZoneId),
-		Backend: b,
-		Context: ctx,
-		Storage: &logical.InmemStorage{},
+		Backend:   b,
+		Context:   ctx,
+		Storage:   &logical.InmemStorage{},
 	}, nil
 }
 
@@ -49,10 +48,7 @@ func TestAcceptanceServiceToken(t *testing.T) {
 
 	t.Run("add config", acceptanceTestEnv.AddConfig)
 	t.Run("add service token role", acceptanceTestEnv.AddServiceTokenRole)
-	//t.Run("add service token role with zone", acceptanceTestEnv.AddServiceTokenRoleWithZone)
 	t.Run("read service token cred", acceptanceTestEnv.ReadServiceToken)
 	t.Run("read service token cred", acceptanceTestEnv.ReadServiceToken)
-	//t.Run("read service token cred with zone", acceptanceTestEnv.ReadServiceTokenWithZone)
-	//t.Run("read service token cred with zone", acceptanceTestEnv.ReadServiceTokenWithZone)
 	t.Run("cleanup user tokens", acceptanceTestEnv.CleanupServiceTokens)
 }

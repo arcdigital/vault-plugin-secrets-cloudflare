@@ -10,21 +10,7 @@ import (
 type cloudflareRoleEntry struct {
 	CredentialType string `json:"type"`
 	AccountID      string `json:"account_id"`
-	//ZoneID         string        `json:"zone_id"`
-	//TTL    time.Duration `json:"ttl"`
-	//MaxTTL time.Duration `json:"max_ttl"`
 }
-
-//func (r *cloudflareRoleEntry) toResponseData() map[string]interface{} {
-//	respData := map[string]interface{}{
-//		"credential_type":     r.TTL.Seconds(),
-//		"account_id":     r.TTL.Seconds(),
-//		"zone_id":     r.TTL.Seconds(),
-//		"ttl":     r.TTL.Seconds(),
-//		"max_ttl": r.MaxTTL.Seconds(),
-//	}
-//	return respData
-//}
 
 func pathRole(b *cloudflareBackend) []*framework.Path {
 	return []*framework.Path{
@@ -46,18 +32,6 @@ func pathRole(b *cloudflareBackend) []*framework.Path {
 					Description: fmt.Sprintf("The cloudflare account id to generate credentials for"),
 					Required:    true,
 				},
-				//"zone_id": {
-				//	Type:        framework.TypeString,
-				//	Description: fmt.Sprintf("The zone id to scope the service token to"),
-				//},
-				//"ttl": {
-				//	Type:        framework.TypeDurationSecond,
-				//	Description: "Default lease for generated credentials. If not set or set to 0, will use system default.",
-				//},
-				//"max_ttl": {
-				//	Type:        framework.TypeDurationSecond,
-				//	Description: "Maximum time for role. If not set or set to 0, will use system default.",
-				//},
 			},
 			Operations: map[logical.Operation]framework.OperationHandler{
 				logical.ReadOperation: &framework.PathOperation{
@@ -111,11 +85,8 @@ func (b *cloudflareBackend) pathRolesRead(ctx context.Context, req *logical.Requ
 
 	var data = make(map[string]interface{})
 	data["credential_type"] = entry.CredentialType
-	//data["ttl"] = entry.TTL / time.Second
-	//data["max_ttl"] = entry.MaxTTL / time.Second
 	if entry.CredentialType == "service" {
 		data["account_id"] = entry.AccountID
-		//data["zone_id"] = entry.ZoneID
 	}
 
 	return &logical.Response{
@@ -155,26 +126,6 @@ func (b *cloudflareBackend) pathRolesWrite(ctx context.Context, req *logical.Req
 	} else if !ok && createOperation {
 		return nil, fmt.Errorf("missing account_id in cloudflare role")
 	}
-
-	//if zoneId, ok := d.GetOk("zone_id"); ok {
-	//	roleEntry.ZoneID = zoneId.(string)
-	//}
-
-	//if ttlRaw, ok := d.GetOk("ttl"); ok {
-	//	roleEntry.TTL = time.Duration(ttlRaw.(int)) * time.Second
-	//} else if createOperation {
-	//	roleEntry.TTL = time.Duration(d.Get("ttl").(int)) * time.Second
-	//}
-	//
-	//if maxTTLRaw, ok := d.GetOk("max_ttl"); ok {
-	//	roleEntry.MaxTTL = time.Duration(maxTTLRaw.(int)) * time.Second
-	//} else if createOperation {
-	//	roleEntry.MaxTTL = time.Duration(d.Get("max_ttl").(int)) * time.Second
-	//}
-	//
-	//if roleEntry.MaxTTL != 0 && roleEntry.TTL > roleEntry.MaxTTL {
-	//	return logical.ErrorResponse("ttl cannot be greater than max_ttl"), nil
-	//}
 
 	if err := setRole(ctx, req.Storage, name.(string), roleEntry); err != nil {
 		return nil, err

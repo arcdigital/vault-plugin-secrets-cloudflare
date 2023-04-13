@@ -15,7 +15,6 @@ const (
 )
 
 type cloudflareConfig struct {
-	//AccountID string `json:"account_id"`
 	APIToken string `json:"api_token"`
 }
 
@@ -23,15 +22,6 @@ func pathConfig(b *cloudflareBackend) *framework.Path {
 	return &framework.Path{
 		Pattern: "config",
 		Fields: map[string]*framework.FieldSchema{
-			//"account_id": {
-			//	Type:        framework.TypeString,
-			//	Description: "Cloudflare Account ID",
-			//	Required:    true,
-			//	DisplayAttrs: &framework.DisplayAttributes{
-			//		Name:      "Account ID",
-			//		Sensitive: false,
-			//	},
-			//},
 			"api_token": {
 				Type:        framework.TypeString,
 				Description: "Cloudflare API Token",
@@ -85,7 +75,6 @@ func (b *cloudflareBackend) pathConfigRead(ctx context.Context, req *logical.Req
 	return &logical.Response{
 		Data: map[string]interface{}{
 			"api_token": mask + lastFour,
-			//"account_id": config.AccountID,
 		},
 	}, nil
 }
@@ -104,12 +93,6 @@ func (b *cloudflareBackend) pathConfigWrite(ctx context.Context, req *logical.Re
 		}
 		config = new(cloudflareConfig)
 	}
-
-	//if accountId, ok := data.GetOk("account_id"); ok {
-	//	config.AccountID = accountId.(string)
-	//} else if !ok && createOperation {
-	//	return nil, fmt.Errorf("missing account_id in configuration")
-	//}
 
 	if apiToken, ok := data.GetOk("api_token"); ok {
 		config.APIToken = apiToken.(string)

@@ -14,7 +14,6 @@ const (
 	envVarRunAcceptanceTests  = "VAULT_ACC"
 	envVarCloudflareApiToken  = "TEST_CLOUDFLARE_API_TOKEN"
 	envVarCloudflareAccountId = "TEST_CLOUDFLARE_ACCOUNT_ID"
-	//envVarCloudflareZoneId    = "TEST_CLOUDFLARE_ZONE_ID"
 )
 
 func getTestBackend(tb testing.TB) (*cloudflareBackend, logical.Storage) {
@@ -38,7 +37,6 @@ var runAcceptanceTests = os.Getenv(envVarRunAcceptanceTests) == "1"
 type testEnv struct {
 	APIToken  string
 	AccountID string
-	//ZoneID    string
 
 	Backend logical.Backend
 	Context context.Context
@@ -78,22 +76,6 @@ func (e *testEnv) AddServiceTokenRole(t *testing.T) {
 	require.Nil(t, err)
 }
 
-//func (e *testEnv) AddServiceTokenRoleWithZone(t *testing.T) {
-//	req := &logical.Request{
-//		Operation: logical.UpdateOperation,
-//		Path:      "role/test-service-token-zone",
-//		Storage:   e.Storage,
-//		Data: map[string]interface{}{
-//			"credential_type": "service",
-//			"account_id":      e.AccountID,
-//			"zone_id":         e.ZoneID,
-//		},
-//	}
-//	resp, err := e.Backend.HandleRequest(e.Context, req)
-//	require.Nil(t, resp)
-//	require.Nil(t, err)
-//}
-
 func (e *testEnv) ReadServiceToken(t *testing.T) {
 	req := &logical.Request{
 		Operation: logical.ReadOperation,
@@ -118,31 +100,6 @@ func (e *testEnv) ReadServiceToken(t *testing.T) {
 		e.SecretToken = t.(string)
 	}
 }
-
-//func (e *testEnv) ReadServiceTokenWithZone(t *testing.T) {
-//	req := &logical.Request{
-//		Operation: logical.ReadOperation,
-//		Path:      "service-token/test-service-token-zone",
-//		Storage:   e.Storage,
-//	}
-//	resp, err := e.Backend.HandleRequest(e.Context, req)
-//	require.Nil(t, err)
-//	require.NotNil(t, resp)
-//
-//	if t, ok := resp.Data["token_id"]; ok {
-//		e.Tokens = append(e.Tokens, t.(string))
-//	}
-//	require.NotEmpty(t, resp.Data["client_secret"])
-//
-//	if e.SecretToken != "" {
-//		require.NotEqual(t, e.SecretToken, resp.Data["client_secret"])
-//	}
-//
-//	require.NotNil(t, resp.Secret)
-//	if t, ok := resp.Secret.InternalData["token_id"]; ok {
-//		e.SecretToken = t.(string)
-//	}
-//}
 
 func (e *testEnv) CleanupServiceTokens(t *testing.T) {
 	if len(e.Tokens) != 2 {

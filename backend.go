@@ -33,21 +33,17 @@ func backend() *cloudflareBackend {
 			SealWrapStorage: []string{
 				"config",
 				"service-token/*",
-				//"api-token/*",
 			},
 		},
 		Paths: framework.PathAppend(
-			//pathApiTokens(&b),
 			pathRole(&b),
 			[]*framework.Path{
 				pathConfig(&b),
 				pathServiceTokens(&b),
-				//pathCredentials(&b),
 			},
 		),
 		Secrets: []*framework.Secret{
 			b.cloudflareServiceToken(),
-			//b.cloudflareApiToken(),
 		},
 		BackendType: logical.TypeLogical,
 		Invalidate:  b.invalidate,

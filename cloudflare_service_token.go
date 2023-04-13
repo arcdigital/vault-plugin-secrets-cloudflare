@@ -19,8 +19,6 @@ type cloudflareServiceToken struct {
 	TokenName    string `json:"token_name"`
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
-	//TTL          time.Duration `json:"ttl"`
-	//MaxTTL       time.Duration `json:"max_ttl"`
 }
 
 func (token *cloudflareServiceToken) toResponseData() map[string]interface{} {
@@ -125,22 +123,7 @@ func (b *cloudflareBackend) tokenRenew(ctx context.Context, req *logical.Request
 		return nil, fmt.Errorf("error renewing service token: %w", err)
 	}
 
-	//resourceContainer := cloudflare.AccountIdentifier(roleEntry.AccountID)
-	//
-	//response, err := b.client.RefreshAccessServiceToken(ctx, resourceContainer, tokenId)
-	//if err != nil {
-	//	return nil, fmt.Errorf("error creating service token: %w", err)
-	//}
-
 	resp := &logical.Response{Secret: req.Secret}
-	//resp.Secret.InternalData["expires_at"] = response.ExpiresAt
-
-	//if roleEntry.TTL > 0 {
-	//	resp.Secret.TTL = roleEntry.TTL
-	//}
-	//if roleEntry.MaxTTL > 0 {
-	//	resp.Secret.MaxTTL = roleEntry.MaxTTL
-	//}
 
 	return resp, nil
 }
@@ -148,18 +131,6 @@ func (b *cloudflareBackend) tokenRenew(ctx context.Context, req *logical.Request
 func createToken(ctx context.Context, c *cloudflareClient, role *cloudflareRoleEntry) (*cloudflareServiceToken, error) {
 
 	suffix := uuid.New().String()
-	//if role.ZoneID != "" {
-	//	response, err := c.CreateZoneLevelAccessServiceToken(ctx, role.ZoneID, "vault-zone-"+suffix)
-	//	if err != nil {
-	//		return nil, fmt.Errorf("error creating zone service token: %w", err)
-	//	}
-	//	return &cloudflareServiceToken{
-	//		TokenID:      response.ID,
-	//		TokenName:    response.Name,
-	//		ClientID:     response.ClientID,
-	//		ClientSecret: response.ClientSecret,
-	//	}, nil
-	//} else {
 	response, err := c.CreateAccessServiceToken(ctx, role.AccountID, "vault-account-"+suffix)
 	if err != nil {
 		return nil, fmt.Errorf("error creating account service token: %w", err)
@@ -170,17 +141,11 @@ func createToken(ctx context.Context, c *cloudflareClient, role *cloudflareRoleE
 		ClientID:     response.ClientID,
 		ClientSecret: response.ClientSecret,
 	}, nil
-	//}
 }
 
 func renewToken(ctx context.Context, c *cloudflareClient, tokenId string, role *cloudflareRoleEntry) error {
-	//if role.ZoneID != "" {
-	//	resourceContainer := cloudflare.AccountIdentifier(role.AccountID)
-	//	_, err = c.Refresh(ctx, resourceContainer, tokenId)
-	//} else {
 	resourceContainer := cloudflare.AccountIdentifier(role.AccountID)
 	_, err := c.RefreshAccessServiceToken(ctx, resourceContainer, tokenId)
-	//}
 
 	if err != nil {
 		return err

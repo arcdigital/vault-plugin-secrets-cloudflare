@@ -58,18 +58,8 @@ func (b *cloudflareBackend) createUserCreds(ctx context.Context, req *logical.Re
 		"token_id":      token.TokenID,
 		"client_id":     token.ClientID,
 		"client_secret": token.ClientSecret,
-		//"ttl":           token.TTL,
-		//"max_ttl":       token.MaxTTL,
-		"role": roleName,
+		"role":          roleName,
 	})
-
-	//if role.TTL > 0 {
-	//	resp.Secret.TTL = role.TTL
-	//}
-	//
-	//if role.MaxTTL > 0 {
-	//	resp.Secret.MaxTTL = role.MaxTTL
-	//}
 
 	return resp, nil
 }

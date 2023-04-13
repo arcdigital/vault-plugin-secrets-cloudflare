@@ -69,8 +69,6 @@ func testAccServiceRole(t *testing.T, roleName string) stepwise.Step {
 		Data: map[string]interface{}{
 			"credential_type": "service",
 			"account_id":      os.Getenv(envVarCloudflareAccountId),
-			//"ttl":             "1m",
-			//"max_ttl":         "5m",
 		},
 		Assert: func(resp *api.Secret, err error) error {
 			require.Nil(t, resp)

@@ -12,9 +12,6 @@ import (
 const (
 	roleName  = "testServiceRole"
 	accountId = "testaccountid"
-	//zoneId     = "testzoneid"
-	//testTTL    = int64(120)
-	//testMaxTTL = int64(3600)
 )
 
 func TestServiceRole(t *testing.T) {
@@ -27,8 +24,6 @@ func TestServiceRole(t *testing.T) {
 				map[string]interface{}{
 					"credential_type": "service",
 					"account_id":      accountId,
-					//"ttl":             testTTL,
-					//"max_ttl":         testMaxTTL,
 				})
 			require.NoError(t, err)
 		}
@@ -42,28 +37,12 @@ func TestServiceRole(t *testing.T) {
 		resp, err := testServiceRoleCreate(t, b, s, roleName, map[string]interface{}{
 			"credential_type": "service",
 			"account_id":      accountId,
-			//"ttl":             testTTL,
-			//"max_ttl":         testMaxTTL,
 		})
 
 		require.Nil(t, err)
 		require.Nil(t, resp.Error())
 		require.Nil(t, resp)
 	})
-
-	//t.Run("Create Service Role With Zone", func(t *testing.T) {
-	//	resp, err := testServiceRoleCreate(t, b, s, roleName+"-zone", map[string]interface{}{
-	//		"credential_type": "service",
-	//		"account_id":      accountId,
-	//		"zone_id":         zoneId,
-	//		"ttl":             testTTL,
-	//		"max_ttl":         testMaxTTL,
-	//	})
-	//
-	//	require.Nil(t, err)
-	//	require.Nil(t, resp.Error())
-	//	require.Nil(t, resp)
-	//})
 
 	t.Run("Read Service Role", func(t *testing.T) {
 		resp, err := testServiceRoleRead(t, b, s, roleName)
@@ -74,21 +53,9 @@ func TestServiceRole(t *testing.T) {
 		require.Equal(t, resp.Data["account_id"], accountId)
 	})
 
-	//t.Run("Read Service Role With Zone", func(t *testing.T) {
-	//	resp, err := testServiceRoleRead(t, b, s, roleName+"-zone")
-	//
-	//	require.Nil(t, err)
-	//	require.Nil(t, resp.Error())
-	//	require.NotNil(t, resp)
-	//	require.Equal(t, resp.Data["account_id"], accountId)
-	//	require.Equal(t, resp.Data["zone_id"], zoneId)
-	//})
-
 	t.Run("Update Service Role", func(t *testing.T) {
 		resp, err := testServiceRoleUpdate(t, b, s, roleName, map[string]interface{}{
 			"account_id": accountId + "-updated",
-			//"ttl":        "1m",
-			//"max_ttl":    "5h",
 		})
 
 		require.Nil(t, err)

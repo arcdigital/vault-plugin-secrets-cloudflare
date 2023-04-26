@@ -3,7 +3,7 @@ module github.com/arcdigital/vault-plugin-secrets-cloudflare
 go 1.20
 
 require (
-	github.com/cloudflare/cloudflare-go v0.65.0
+	github.com/cloudflare/cloudflare-go v0.66.0
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-hclog v1.5.0
 	github.com/hashicorp/vault-testing-stepwise v0.1.3
